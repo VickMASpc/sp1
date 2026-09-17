@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0d12" />
+  <title>Model Viewer</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">THREE.JS · GLB / GLTF / OBJ</p>
+        <h1>Model Viewer</h1>
+      </div>
+      <div class="top-actions">
+        <label class="button primary" for="modelInput">Open model</label>
+        <input id="modelInput" type="file" accept=".glb,.gltf,.obj,.mtl,image/*" multiple hidden />
+        <button id="resetCameraBtn" class="button">Reset camera</button>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="panel left-panel">
+        <div class="panel-section">
+          <h2>Scene</h2>
+          <label class="control-row"><span>Grid</span><input id="gridToggle" type="checkbox" checked /></label>
+          <label class="control-row"><span>Axes</span><input id="axesToggle" type="checkbox" /></label>
+          <label class="control-row"><span>Auto rotate</span><input id="rotateToggle" type="checkbox" /></label>
+          <label class="control-row"><span>Wireframe</span><input id="wireframeToggle" type="checkbox" /></label>
+        </div>
+
+        <div class="panel-section">
+          <h2>Lighting</h2>
+          <label class="slider-row">
+            <span>Key light</span>
+            <input id="keyLight" type="range" min="0" max="6" step="0.1" value="2.4" />
+            <output id="keyLightValue">2.4</output>
+          </label>
+          <label class="slider-row">
+            <span>Ambient</span>
+            <input id="ambientLight" type="range" min="0" max="4" step="0.1" value="1.2" />
+            <output id="ambientLightValue">1.2</output>
+          </label>
+        </div>
+
+        <div class="panel-section">
+          <h2>Background</h2>
+          <div class="swatches">
+            <button class="swatch" data-bg="#0b0d12" aria-label="Dark background"></button>
+            <button class="swatch" data-bg="#1d2430" aria-label="Slate background"></button>
+            <button class="swatch" data-bg="#d7d9df" aria-label="Light background"></button>
+            <button class="swatch" data-bg="#ffffff" aria-label="White background"></button>
+          </div>
+        </div>
+      </aside>
+
+      <section id="viewer" class="viewer" aria-label="3D viewport">
+        <canvas id="canvas"></canvas>
+        <div id="dropZone" class="drop-zone">
+          <div class="drop-card">
+            <div class="drop-icon">3D</div>
+            <strong>Drop a model here</strong>
+            <span>GLB, GLTF or OBJ</span>
+            <small>For OBJ materials, select the OBJ + MTL + texture files together.</small>
+          </div>
+        </div>
+        <div id="loading" class="loading hidden">Loading model…</div>
+        <div id="errorToast" class="toast hidden"></div>
+        <div class="viewport-hint">Left drag: orbit · Right drag: pan · Wheel/pinch: zoom</div>
+      </section>
+
+      <aside class="panel right-panel">
+        <div class="panel-section">
+          <h2>Model</h2>
+          <dl class="stats">
+            <div><dt>Name</dt><dd id="statName">—</dd></div>
+            <div><dt>Meshes</dt><dd id="statMeshes">—</dd></div>
+            <div><dt>Vertices</dt><dd id="statVertices">—</dd></div>
+            <div><dt>Triangles</dt><dd id="statTriangles">—</dd></div>
+            <div><dt>Materials</dt><dd id="statMaterials">—</dd></div>
+            <div><dt>Animations</dt><dd id="statAnimations">—</dd></div>
+            <div><dt>Size</dt><dd id="statSize">—</dd></div>
+          </dl>
+        </div>
+
+        <div class="panel-section">
+          <h2>Animation</h2>
+          <select id="animationSelect" class="select" disabled>
+            <option>No animations</option>
+          </select>
+          <div class="animation-actions">
+            <button id="playPauseBtn" class="button" disabled>Play</button>
+            <button id="stopBtn" class="button" disabled>Stop</button>
+          </div>
+          <label class="slider-row speed-row">
+            <span>Speed</span>
+            <input id="speedRange" type="range" min="0.1" max="2.5" step="0.1" value="1" disabled />
+            <output id="speedValue">1.0×</output>
+          </label>
+        </div>
+
+        <div class="panel-section">
+          <h2>Tools</h2>
+          <button id="fitBtn" class="button wide" disabled>Frame model</button>
+          <button id="screenshotBtn" class="button wide" disabled>Save screenshot</button>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
